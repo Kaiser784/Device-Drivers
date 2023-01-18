@@ -1,0 +1,1 @@
+cmd_/home/user/Documents/CED19I002-2/Device-Drivers/week3/char_dev/chr_dev.ko := ld -r  -m elf_x86_64  --build-id=sha1  -T scripts/module.lds -o /home/user/Documents/CED19I002-2/Device-Drivers/week3/char_dev/chr_dev.ko /home/user/Documents/CED19I002-2/Device-Drivers/week3/char_dev/chr_dev.o /home/user/Documents/CED19I002-2/Device-Drivers/week3/char_dev/chr_dev.mod.o;  true
