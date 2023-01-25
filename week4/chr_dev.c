@@ -7,8 +7,15 @@
 #include<linux/device.h>
 #include<linux/slab.h>
 #include<linux/uaccess.h>
+#include<linux/ioctl.h>
 
 #define mem_size 1024  // Macro for memory size
+
+// Define the ioctl code
+#define WR_DATA _IOW('a','a',int32_t*)
+#define RD_DATA _IOR('a','b',int32_t*)
+
+int32_t val=0;
 
 dev_t dev = 0;
 static struct class *dev_class;
@@ -23,7 +30,7 @@ static int my_open(struct inode *inode, struct file *file);
 static int my_release(struct inode *inode, struct file *file);
 static ssize_t my_read(struct file *filp, char __user *buf, size_t len, loff_t *off);
 static ssize_t my_write(struct file *filp, const char *buf, size_t len, loff_t *off);
-
+static long my_ioctl(struct file *file,unsigned int cmd,unsigned long arg);
 
 static struct file_operations fops=
 {
@@ -31,6 +38,7 @@ static struct file_operations fops=
 	.read		= 	my_read,
 	.write		=	my_write,
 	.open		=	my_open,
+	.unlocked_ioctl =	my_ioctl,
 	.release	=	my_release,
 }; 
 
@@ -63,8 +71,22 @@ static ssize_t my_read(struct file *filp, char __user *buf, size_t  len, loff_t 
 static ssize_t my_write(struct file *filp, const char __user *buf, size_t len, loff_t  *loff)
 {
 	copy_from_user(kernel_buffer, buf, len);
-	printk(KERN_INFO"Data is written Successfully...\n");
+	printk(KERN_INFO "Data is written Successfully...\n");
 	return len;
+}
+
+static long my_ioctl(struct file *file,unsigned int cmd, unsigned long arg)
+{
+	switch(cmd){
+		case WR_DATA:
+			copy_from_user(&val,(int32_t*)arg,sizeof(val));
+			printk(KERN_INFO " val=%d\n",val);
+			break;
+		case RD_DATA:
+			copy_to_user((int32_t*)arg,&val,sizeof(val));
+			break;
+	}
+return 0;
 }
 
 
