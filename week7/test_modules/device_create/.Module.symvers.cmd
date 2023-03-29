@@ -1,1 +1,0 @@
-cmd_/home/user/Documents/CED19I002-2/Device-Drivers/week7/test_modules/device_create/Module.symvers := sed 's/\.ko$$/\.o/' /home/user/Documents/CED19I002-2/Device-Drivers/week7/test_modules/device_create/modules.order | scripts/mod/modpost -m -a  -o /home/user/Documents/CED19I002-2/Device-Drivers/week7/test_modules/device_create/Module.symvers -e -i Module.symvers   -T -
